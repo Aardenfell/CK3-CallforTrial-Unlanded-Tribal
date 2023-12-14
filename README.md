@@ -2,7 +2,7 @@
 
 ![Mod Banner](https://github.com/Aardenfell/Call-for-Trial---Unlanded---Tribal/blob/master/thumbnail.png)
 
-This is an enhanced version of the "Call for Trial" mod originally created by [Original Author](https://steamcommunity.com/profiles/76561199180090097). The original mod can be found [here](https://steamcommunity.com/sharedfiles/filedetails/?id=2898554396&searchtext=call+for+trial).
+This is my version of the "Call for Trial" mod originally created by [QQ](https://steamcommunity.com/profiles/76561199180090097). The original mod can be found [here](https://steamcommunity.com/sharedfiles/filedetails/?id=2898554396&searchtext=call+for+trial).
 
 ## Overview
 
@@ -29,7 +29,7 @@ The "Call for Trial" mod enables players to call vassals and court members to tr
   - The mod was heavily inspired by the CK2 AGOT Trial feature, with credit to the AGOT team.
 
 - **Other Mods:**
-  - Check out [Original Author's other mods](https://steamcommunity.com/workshop/filedetails/?id=2966612217).
+  - Check out [QQ's other mods](https://steamcommunity.com/workshop/filedetails/?id=2966612217).
 
 ## Changes Made
 
@@ -50,6 +50,10 @@ In addition to the original features, this enhanced version incorporates the fol
 2. Extract the contents into your game's mod directory.
 3. Enable the mod in the game's launcher.
 
+or
+
+Download via [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3113930804)
+
 ## Compatibility
 
 This version should have the same compatibilty as the original mod. However, don't use both at the same time.
@@ -64,7 +68,7 @@ This enhancement is provided under the same license as the original mod. Please 
 
 ## Acknowledgments
 
-- [Original Author](https://steamcommunity.com/profiles/76561199180090097) for creating the "Call for Trial" mod.
+- [QQ](https://steamcommunity.com/profiles/76561199180090097) for creating the "Call for Trial" mod.
 - The modding community for their support and resources.
 
 ## Disclaimer
