@@ -1,9 +1,9 @@
-version="1.0"
+version="1.1"
 tags={
-	"Character Interactions"
 	"Gameplay"
-	"Culture"
+	"Decisions"
+	"Events"
+	"Character Interactions"
 }
-name="Call for Trial"
+name="Call for Trial - Courtiers & Tribal"
 supported_version="1.11.*"
-remote_file_id="2898554396"
