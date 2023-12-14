@@ -46,6 +46,7 @@ In addition to the original features, this enhanced version incorporates the fol
 
 ## Installation
 
+[Not Finished Yet]
 1. Download the latest version of the mod from the [Releases](https://github.com/Aardenfell/Call-for-Trial---Unlanded---Tribal/releases) page.
 2. Extract the contents into your game's mod directory.
 3. Enable the mod in the game's launcher.
