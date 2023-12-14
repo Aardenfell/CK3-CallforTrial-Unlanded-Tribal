@@ -38,7 +38,7 @@ In addition to the original features, this enhanced version incorporates the fol
 1. **Removed Tribal Limitations:**
    - The mod originally had limitations related to tribal mechanics. My changes removes those limitations, allowing for a broader application of the trial system.
 
-2. **Courtiers Can Be Called to Trial:**
+2. **Unlanded Courtiers Can Be Called to Trial:**
    - In the original version, only landed courtier could be summoned to trial. My modification expands the scope to include unlanded courtiers, providing more flexibility in managing legal affairs within the realm.
 
 3. **Reduced Trial Cooldown to 1 Month:**
