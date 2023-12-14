@@ -1,0 +1,1541 @@
+namespace = cft
+
+cft.99 = { # setup part 1: trial is demanded, liege
+	type = character_event
+	
+	title = cft.99.t
+	desc = cft.99.d
+
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:guilty
+		animation = disapproval
+	}
+
+	immediate = {
+		every_vassal_or_below = {
+			limit = {
+				has_character_flag = put_on_trial
+			}
+			save_scope_as = guilty
+		}
+		root = {
+			save_scope_as = judge
+		}
+	}
+
+	option = { # accept trial
+		name = cft.99.a
+		custom_tooltip = cft.99.tt.a
+        hidden_effect = {
+			if = {
+				limit = {
+					root = { employs_court_position = justiciar_position }
+				}
+				root = {
+					trigger_event = {
+						id = cft.2
+					}
+				}
+			}
+			else = {
+				root = {
+					trigger_event = {
+						id = cft.100
+					}  					
+				}
+			}
+        }
+		ai_chance = {
+			base = 100
+		}
+	}
+	
+	option = { # don't accept trial
+		name = cft.99.b
+        add_tyranny = 7
+		scope:guilty = {
+			trigger_event = {
+				id = cft.102
+			} 
+		}
+	}
+	
+}
+
+cft.100 = { # setup part 2: liege gets to pick a justiciar
+	type = character_event
+	
+	title = cft.100.t
+	desc = cft.100.d
+
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:guilty
+		animation = disapproval
+	}
+
+	option = { # chancellor
+		name = cft.100.a
+		trigger = {
+			exists = cp:councillor_chancellor
+		}
+		appoint_court_position = {
+			recipient = cp:councillor_chancellor
+			court_position = justiciar_position
+		}
+		root = {
+			trigger_event = {
+				id = cft.2
+			}
+		}
+	}
+	option = { # random good courtier
+		name = cft.100.b
+		random_courtier = {
+			limit = {
+				OR = {
+					is_of_major_interest_to_root_trigger = yes
+					is_of_minor_interest_to_root_trigger = yes
+				}
+				can_be_employed_in_any_court_position_trigger = yes
+			}
+			save_scope_as = random_courtier_cft
+		}
+		root = {
+			appoint_court_position = {
+				recipient = scope:random_courtier_cft
+				court_position = justiciar_position
+			}
+			trigger_event = {
+				id = cft.2
+			}
+		}
+	}
+}
+
+cft.102 = { # event for the person who demanded a trial, liege denies the trial
+	type = character_event
+	
+	title = cft.102.t
+	desc = cft.102.d
+
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:guilty
+		animation = disapproval
+	}
+	
+	option = {
+		name = cft.102.a
+	}
+}
+
+cft.1 = { # setup
+	type = character_event
+	
+	hidden = yes
+	
+	immediate = {
+		scope:recipient = {
+			save_scope_as = guilty
+		}
+		root = {
+			save_scope_as = judge
+		}
+        root = {
+            trigger_event = {
+                id = cft.2
+            }
+        }
+	}
+	
+}
+
+cft.2 = { # event for the person who called the trial, introduction
+	type = character_event
+	
+	title = cft.2.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { scope:judge = { has_imprisonment_reason = scope:guilty } }
+				}
+				desc = cft.2.d.ir
+			}
+			desc = cft.2.d
+		}
+	}
+
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:guilty
+		animation = disapproval
+	}
+	
+	option = {
+		name = cft.2.a
+        hidden_effect = {
+            trigger_event = {
+                id = cft.4
+            }           
+        }
+	}
+
+	option = {
+		name = cft.2.b
+		trait = arbitrary
+		trigger = {
+			has_trait = arbitrary
+			intrigue > 12
+		}
+		custom_tooltip = cft_rigged_tt
+		add_tyranny = 5
+		hidden_effect = {
+			add_character_flag = cft_rigged_trial
+			trigger_event = {
+                id = cft.4
+            } 
+		}
+	}
+
+	option = {
+		name = cft.2.c
+		skill = intrigue
+		trigger = {
+			intrigue > 18
+		}
+		remove_short_term_gold = 350
+		custom_tooltip = cft_rigged_tt
+		hidden_effect = {
+			add_character_flag = cft_rigged_trial
+			trigger_event = {
+                id = cft.4
+            } 
+		}
+	}
+
+}
+cft.3 = { # event for the person being tried, introduction
+	type = character_event
+	
+	title = cft.3.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { scope:judge = { has_imprisonment_reason = scope:guilty } }
+				}
+				desc = cft.3.d.ir
+			}
+			desc = cft.3.d
+		}
+	}
+
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:judge
+		animation = disapproval
+	}
+	
+	option = {
+		name = cft.3.a
+		hidden_effect = {
+			if = {
+				limit = {
+					scope:judge = {
+						has_character_flag = cft_guilty
+					}
+				}
+				scope:judge = {
+					trigger_event = {
+						days = 2
+						id = cft.7
+					}
+				}
+				scope:guilty = {
+					trigger_event = {
+						days = 2
+						id = cft.8
+					}
+				}
+			}
+			else = {
+				scope:judge = {
+					trigger_event = {
+						days = 2
+						id = cft.5
+					}
+				}
+			}
+			if = {
+				limit = {
+					root = { has_character_flag = terrible_trial }
+				}
+				trigger_event = {
+					id = cft.51
+				} 
+			}
+			else_if = {
+				limit = {
+					root = { has_character_flag = middle_trial }
+				}
+				trigger_event = {
+					id = cft.52
+				} 
+			}
+			else_if = {
+				limit = {
+					root = { has_character_flag = good_trial }
+				}
+				trigger_event = {
+					id = cft.53
+				} 
+			}
+			scope:judge = {
+				remove_character_flag = cft_guilty
+				remove_character_flag = cft_not_guilty
+			}
+			root = {
+				remove_character_flag = good_trial
+				remove_character_flag = middle_trial
+				remove_character_flag = terrible_trial
+			}
+		}
+		ai_chance = {
+			base = 65
+		}
+	}
+	option = { #trial by combat
+		name = cft.3.b
+		hidden_effect = {
+			root = {
+				remove_character_flag = good_trial
+				remove_character_flag = middle_trial
+				remove_character_flag = terrible_trial
+			}
+			scope:judge = {
+				remove_character_flag = cft_guilty
+				remove_character_flag = cft_not_guilty
+			}
+			scope:judge = {
+				trigger_event = {
+					id = cft.500
+				}
+			}
+		}
+		ai_chance = {
+			base = 35
+		}
+	}
+}
+
+cft.4 = { # determining the verdict
+    type = character_event
+
+    hidden = yes  
+
+    immediate = {
+        every_court_position_holder = {
+            limit = {
+                has_court_position = justiciar_position
+            }
+            save_scope_as = justiciar
+        }
+
+        scope:guilty = { remove_character_flag = put_on_trial }
+
+        random_list = {
+            50 = { #guilty
+				modifier = {
+					add = 100000
+					has_character_flag = cft_rigged_trial
+				}
+                modifier = {
+                    add = {
+                        value = scope:justiciar.diplomacy
+                        subtract = scope:guilty.diplomacy
+                    }
+                }
+
+                modifier = {
+                    add = 15
+                    has_trait = intellect_good_3
+                }
+                modifier = {
+                    add = 10
+                    has_trait = intellect_good_2
+                }
+                modifier = {
+                    add = 5
+                    has_trait = intellect_good_2
+                }
+
+                modifier = {
+                    add = 10
+					scope:guilty = {
+						OR = {
+							has_trait = kinslayer_1
+							has_trait = kinslayer_2
+							has_trait = kinslayer_3
+						}
+					}
+                }
+				
+				remove_character_flag = cft_rigged_trial
+                add_character_flag = cft_guilty
+
+                random_list = {
+                    78 = {
+                        scope:judge = {
+                            trigger_event = {
+                                id = cft.53
+                            }                            
+                        }
+                        scope:guilty = {
+							add_character_flag = good_trial
+                            trigger_event = {
+                                id = cft.3               
+                            }
+                        }                       
+                    }
+                    11 = {
+                        scope:judge = {
+                            trigger_event = {
+                                id = cft.52
+                            }                           
+                        }
+
+                        scope:guilty = {
+							add_character_flag = middle_trial
+                            trigger_event = {
+                                id = cft.3            
+                            }
+                        }
+                    }
+                    11 = {
+                        scope:judge = {
+                            trigger_event = {
+                                id = cft.51
+                            }                           
+                        }
+
+                        scope:guilty = {
+							add_character_flag = terrible_trial
+                            trigger_event = {
+                                id = cft.3                
+                            }
+                        }  
+                    }
+                }
+            }
+            50 = { # not guilty
+                modifier = {
+                    add = {
+                        value = scope:judge.tyranny
+                    }
+                }
+                modifier = {
+                    add = 15
+                    scope:guilty = { has_trait = intellect_good_3 }
+                }
+                modifier = {
+                    add = 10
+                    scope:guilty = { has_trait = intellect_good_2 }
+                }
+                modifier = {
+                    add = 5
+                    scope:guilty = { has_trait = intellect_good_2 }
+                }
+                modifier = {
+                    add = 10
+                    scope:guilty = { has_trait = compassionate }
+                }
+				add_character_flag = cft_not_guilty
+                random_list = {
+                    10 = {
+                        scope:judge = {
+                            trigger_event = {
+                                id = cft.53
+                            }                           
+                        }
+                        scope:guilty = {
+							add_character_flag = good_trial
+                            trigger_event = {
+                                id = cft.3              
+                            }
+                        }                       
+                    }
+                    45 = {
+                        scope:judge = {
+                            trigger_event = {
+                                id = cft.52
+                            }                           
+                        }
+                        scope:guilty = {
+							add_character_flag = middle_trial
+                            trigger_event = {
+                                id = cft.3           
+                            }
+                        }  
+                    }
+                    45 = {
+                        scope:judge = {
+                            trigger_event = {
+                                id = cft.51
+                            }                           
+                        }
+                        scope:guilty = {
+							add_character_flag = terrible_trial
+                            trigger_event = {
+                                id = cft.3               
+                            }
+                        }  
+                    }
+                }
+            }  
+        }     
+    }
+}
+cft.51 = { # bad case
+	type = character_event
+	
+	title = cft.51.t
+	desc = cft.51.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:guilty
+		animation = admiration
+	}
+	right_portrait = {
+		character = scope:judge
+		animation = worry
+	}
+	
+	option = {
+		name = cft.51.a
+	}
+}
+
+cft.52 = { # moderate case
+	type = character_event
+	
+	title = cft.52.t
+	desc = cft.52.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:judge
+		animation = dismissal
+	}
+	right_portrait = {
+		character = scope:guilty
+		animation = stress
+	}
+	
+	option = {
+		name = cft.52.a
+	}
+}
+
+cft.53 = { # great case
+	type = character_event
+	
+	title = cft.53.t
+	desc = cft.53.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:guilty
+		animation = rage
+	}
+	right_portrait = {
+		character = scope:judge
+		animation = happiness
+	}
+	
+	option = {
+		name = cft.53.a
+	}
+}
+
+cft.500 = { # trial by combat - judge - picking champions
+	type = character_event
+	
+	title = cft.500.t
+	desc = cft.500.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:cft_champion_judge_2
+		animation = aggressive_sword
+	}
+	right_portrait = {
+		character = scope:cft_champion_judge_1
+		animation = aggressive_axe
+	}
+	lower_center_portrait = {
+		character = scope:cft_champion_judge_3
+	}
+	
+	
+	immediate = {
+		if = {
+			limit = {
+				any_close_or_extended_family_member = {
+					prowess > 8
+					age > 16
+					is_imprisoned = no
+					NOT = { this = scope:guilty }
+					is_ai = yes
+				}
+			}
+			random_close_or_extended_family_member = {
+				limit = {
+					prowess > 8
+					age > 16
+					is_imprisoned = no
+					NOT = { this = scope:guilty }
+					is_ai = yes
+				}
+				save_scope_as = cft_champion_family
+				save_scope_as = cft_champion_3
+			}
+		}
+		else = {
+			root = {
+				save_scope_as = cft_champion_judge_3
+			}
+		}
+		if = {
+			limit = {
+				scope:judge = {
+					employs_court_position = champion_court_position
+				}				
+			}
+			every_court_position_holder = {
+				limit = {
+					has_court_position = champion_court_position
+					NOT = { this = scope:guilty }
+					is_ai = yes
+				}
+				save_scope_as = cft_champion_judge_1
+			}
+		}
+		else_if = {
+			limit = {
+				any_close_or_extended_family_member = {
+					prowess > 8
+					age > 16
+					is_imprisoned = no
+					NOT = { this = scope:guilty }
+					is_ai = yes
+				}
+			}
+			scope:cft_champion_family = {
+				save_scope_as = cft_champion_judge_1
+			}
+		}
+		else = {
+			scope:guilty = {
+				save_scope_as = cft_champion_judge_1
+			}		
+		}
+		if = {
+			limit = {
+				any_courtier = {
+					prowess > 8
+					age > 16
+					is_imprisoned = no
+					NOT = { this = scope:guilty }
+					is_ai = yes
+					NOT = { has_court_position = champion_court_position }
+				}
+			}
+			random_courtier = {
+				limit = {
+					prowess > 8
+					age > 16
+					is_imprisoned = no
+					NOT = { this = scope:guilty }
+					is_ai = yes
+					NOT = { has_court_position = champion_court_position }
+				}
+				save_scope_as = cft_champion_judge_2
+			}
+		}
+		else = {
+			scope:judge = {
+				save_scope_as = cft_champion_judge_2
+			}
+		}
+	}
+
+	option = {
+		name = cft.500.a # court position - champion
+		trigger = {
+			scope:judge = {
+				employs_court_position = champion_court_position
+			}
+		}
+		scope:cft_champion_judge_1 = {
+			save_scope_as = cft_champion_judge
+		}
+		custom_tooltip = cft_champion_j_tt
+		clear_saved_scope = cft_champion_family
+		clear_saved_scope = cft_champion_judge_1
+		clear_saved_scope = cft_champion_judge_2
+		clear_saved_scope = cft_champion_judge_3
+		scope:guilty = {
+			trigger_event = {
+				id = cft.501
+			}
+		}
+	}
+	option = { #myself
+		name = cft.500.b
+		scope:judge = {
+			save_scope_as = cft_champion_judge
+		}
+		custom_tooltip = cft_myself_tt
+		clear_saved_scope = cft_champion_family
+		clear_saved_scope = cft_champion_judge_1
+		clear_saved_scope = cft_champion_judge_2
+		clear_saved_scope = cft_champion_judge_3
+		scope:guilty = {
+			trigger_event = {
+				id = cft.501
+			}
+		}
+	}
+
+	option = { #random courtier
+		name = cft.500.c
+		trigger = {
+			NOT = {
+				scope:cft_champion_judge_2 = scope:judge
+			}
+		}
+		scope:cft_champion_judge_2 = {
+			save_scope_as = cft_champion_judge
+		}
+		custom_tooltip = cft_random_courtier_tt
+		clear_saved_scope = cft_champion_family
+		clear_saved_scope = cft_champion_judge_1
+		clear_saved_scope = cft_champion_judge_2
+		clear_saved_scope = cft_champion_judge_3
+		scope:guilty = {
+			trigger_event = {
+				id = cft.501
+			}
+		}
+	}
+
+	option = {
+		name = cft.500.e # family member
+		trigger = {
+			any_close_or_extended_family_member = {
+				prowess > 8
+				age > 16
+				is_imprisoned = no
+				NOT = { this = scope:guilty }
+				is_ai = yes
+			}
+		}
+		scope:cft_champion_family = {
+			save_scope_as = cft_champion_judge
+		}
+		custom_tooltip = cft_family_j_tt
+		clear_saved_scope = cft_champion_family
+		clear_saved_scope = cft_champion_judge_1
+		clear_saved_scope = cft_champion_judge_2
+		clear_saved_scope = cft_champion_judge_3
+		scope:guilty = {
+			trigger_event = {
+				id = cft.501
+			}
+		}
+	}
+}
+
+cft.501 = { # trial by combat - guilty - picking champions
+	type = character_event
+	
+	title = cft.501.t
+	desc = cft.501.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:cft_champion_guilty_2
+		animation = aggressive_sword
+	}
+	right_portrait = {
+		character = scope:cft_champion_guilty_1
+		animation = aggressive_axe
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				scope:guilty = {
+					employs_court_position = champion_court_position
+				}				
+			}
+			every_court_position_holder = {
+				limit = {
+					has_court_position = champion_court_position	
+				}
+				save_scope_as = cft_champion_guilty_1
+			}
+		}
+		else = {
+			scope:judge = {
+				save_scope_as = cft_champion_guilty_1
+			}
+		}
+		if = {
+			limit = {
+				any_close_or_extended_family_member = {
+					prowess > 8
+					age > 16
+					is_imprisoned = no
+					NOT = { has_court_position = champion_court_position }
+					NOT = { this = scope:judge }
+					NOT = { this = scope:cft_champion_judge }
+					is_ai = yes
+				}
+			}
+			random_close_or_extended_family_member = {
+				limit = {
+					prowess > 8
+					age > 16
+					is_imprisoned = no
+					NOT = { has_court_position = champion_court_position }
+					NOT = { this = scope:judge }
+					NOT = { this = scope:cft_champion_judge }
+					is_ai = yes
+				}
+				save_scope_as = cft_champion_guilty_2
+			}
+		}
+		else = {
+			scope:guilty = {
+				save_scope_as = cft_champion_guilty_2
+			}
+		}
+	}
+
+	option = {
+		name = cft.501.a # family member
+		trigger = {
+			NOT = {
+				scope:cft_champion_guilty_2 = scope:guilty
+			}
+		}
+		scope:cft_champion_guilty_2 = {
+			save_scope_as = cft_champion_guilty
+		}
+		custom_tooltip = cft_family_g_tt
+		clear_saved_scope = cft_champion_guilty_1
+		clear_saved_scope = cft_champion_guilty_2
+		scope:judge = {
+			trigger_event = {
+				id = cft.502
+			}
+		}
+		scope:guilty = {
+			trigger_event = {
+				id = cft.502
+			}
+		}
+	}
+	option = { #myself
+		name = cft.501.b
+		scope:guilty = {
+			save_scope_as = cft_champion_guilty
+		}
+		custom_tooltip = cft_myself_tt
+		clear_saved_scope = cft_champion_guilty_1
+		clear_saved_scope = cft_champion_guilty_2
+		scope:judge = {
+			trigger_event = {
+				id = cft.502
+			}
+		}
+		scope:guilty = {
+			trigger_event = {
+				id = cft.502
+			}
+		}
+	}
+	option = {
+		name = cft.501.c # court position - champion
+		trigger = {
+			scope:guilty = {
+				employs_court_position = champion_court_position	
+			}
+		}
+		scope:cft_champion_guilty_1 = {
+			save_scope_as = cft_champion_guilty
+		}
+		custom_tooltip = cft_champion_g_tt
+		clear_saved_scope = cft_champion_guilty_1
+		clear_saved_scope = cft_champion_guilty_2
+		scope:judge = {
+			trigger_event = {
+				id = cft.502
+			}
+		}
+		scope:guilty = {
+			trigger_event = {
+				id = cft.502
+			}
+		}
+	}
+}
+
+cft.502 = { # trial by combat - duel is happening
+	type = character_event
+	
+	title = cft.502.t
+	desc = {
+		desc = cft.502.d
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:cft_champion_judge = scope:judge
+				}
+				desc = cft.502.d.judge_myself
+			}
+			desc = cft.502.d.judge_champion
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:cft_champion_guilty = scope:guilty
+				}
+				desc = cft.502.d.guilty_myself
+			}
+			desc = cft.502.d.guilty_champion
+		}
+	}
+
+	theme = realm
+	left_portrait = {
+		character = scope:guilty
+		animation = admiration
+	}
+	right_portrait = {
+		character = scope:judge
+		animation = worry
+	}
+
+	option = { #let it begin
+		name = cft.502.a
+		if = {
+			limit = {
+				this = scope:judge
+			}
+			trigger_event = {
+				id = cft.5021
+				days = 1
+			}
+		}
+	}
+}
+
+cft.5021 = { # trial by combat - duel event
+	type = character_event
+	
+	hidden = yes
+
+	immediate = { #let it begin
+		configure_start_single_combat_effect = {
+			SC_INITIATOR = scope:judge
+			SC_ATTACKER = scope:cft_champion_judge
+			SC_DEFENDER = scope:cft_champion_guilty
+			FATALITY = possible
+			FIXED = no
+			LOCALE = army_camp
+			OUTPUT_EVENT = cft.503
+			INVALIDATION_EVENT = cft.503
+		}
+	}
+}
+
+cft.503 = { # trial by combat - outcomes
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = { scope:sc_victor = scope:cft_champion_judge }
+			if = {
+				limit = {
+					scope:guilty = {
+						is_alive = yes
+					}
+				}
+				scope:judge = {
+					trigger_event = {
+						id = cft.504
+						days = 1
+					}
+				}
+				scope:guilty = {
+					trigger_event = {
+						id = cft.505
+						days = 1
+					}
+				}
+			}
+			else = {
+				scope:judge = {
+					trigger_event = {
+						id = cft.508
+						days = 1
+					}
+				}			
+			}
+		}
+		else_if = {
+			limit = { scope:sc_victor = scope:cft_champion_guilty }
+			if = {
+				limit = {
+					scope:judge = {
+						is_alive = yes
+					}
+				}
+				scope:guilty = {
+					trigger_event = {
+						id = cft.506
+						days = 1
+					}
+				}
+				scope:judge = {
+					trigger_event = {
+						id = cft.507
+						days = 1
+					}
+				}
+			}
+			else = {
+				scope:guilty = {
+					trigger_event = {
+						id = cft.509
+						days = 1
+					}
+				}					
+			}
+		}
+	}
+}
+
+cft.504 = { # trial by combat - judge - victory, guilty not dead
+	type = character_event
+	
+	title = cft.504.t
+	desc = cft.504.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:guilty
+		animation = fear
+	}
+	lower_left_portrait = {
+		character = scope:cft_champion_guilty
+	}
+	lower_right_portrait = {
+		character = scope:cft_champion_judge
+	}
+	right_portrait = {
+		character = scope:judge
+		animation = happiness
+	}
+
+	immediate = {
+		root = {
+			remove_character_flag = called_trial
+		}
+		if = {
+			limit = {
+				NOT = {
+					scope:guilty = {
+						is_imprisoned_by = scope:judge
+					}
+				}
+			}
+			imprison = { target = scope:guilty }
+		}		
+	}
+	
+	option = {
+		name = cft.504.a
+        hidden_effect = {
+            scope:judge = {
+                trigger_event = {
+                    id = cft.101
+					days = 1
+                }                     
+            } 
+        }
+	}
+}
+
+cft.505 = { # trial by combat - guilty - defeat, guilty not dead
+	type = character_event
+	
+	title = cft.504.t
+	desc = cft.505.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:guilty
+		animation = fear
+	}
+	lower_left_portrait = {
+		character = scope:cft_champion_guilty
+	}
+	lower_right_portrait = {
+		character = scope:cft_champion_judge
+	}
+	right_portrait = {
+		character = scope:judge
+		animation = happiness
+	}
+	
+	option = {
+		name = cft.505.a
+	}
+}
+
+cft.506 = { # trial by combat - guilty - victory
+	type = character_event
+	
+	title = cft.504.t
+	desc = cft.506.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:guilty
+		animation = admiration
+	}
+	lower_left_portrait = {
+		character = scope:cft_champion_guilty
+	}
+	lower_right_portrait = {
+		character = scope:cft_champion_judge
+	}
+	right_portrait = {
+		character = scope:judge
+		animation = worry
+	}
+	
+    immediate = {
+        hidden_effect = {
+            scope:guilty = {
+                cft_free_of_guilt_effect = yes
+            }
+        }
+    }
+
+	option = {
+		name = cft.506.a
+	}
+}
+
+cft.507 = { # trial by combat - judge - defeat
+	type = character_event
+	
+	title = cft.504.t
+	desc = cft.507.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:guilty
+		animation = admiration
+	}
+	lower_left_portrait = {
+		character = scope:cft_champion_guilty
+	}
+	lower_right_portrait = {
+		character = scope:cft_champion_judge
+	}
+	right_portrait = {
+		character = scope:judge
+		animation = worry
+	}
+	
+    immediate = {
+        hidden_effect = {
+			remove_character_flag = called_trial
+			scope:guilty = {
+				release_from_prison = yes
+			}
+        }
+    }
+
+	option = {
+		name = cft.507.a
+	}
+}
+
+cft.508 = { # trial by combat - judge - victory, guilty died
+	type = character_event
+	
+	title = cft.504.t
+	desc = cft.508.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:guilty
+		animation = fear
+	}
+	lower_left_portrait = {
+		character = scope:cft_champion_guilty
+	}
+	lower_right_portrait = {
+		character = scope:cft_champion_judge
+	}
+	right_portrait = {
+		character = scope:judge
+		animation = happiness
+	}
+	
+    immediate = {
+        hidden_effect = {
+			remove_character_flag = called_trial
+        }
+    }
+
+	option = {
+		name = cft.508.a
+	}
+}
+
+cft.509 = { # trial by combat - guilty - victory, judge died
+	type = character_event
+	
+	title = cft.504.t
+	desc = cft.509.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:guilty
+		animation = admiration
+	}
+	lower_left_portrait = {
+		character = scope:cft_champion_guilty
+	}
+	lower_right_portrait = {
+		character = scope:cft_champion_judge
+	}
+	right_portrait = {
+		character = scope:judge
+		animation = fear
+	}
+	
+    immediate = {
+        hidden_effect = {
+			scope:guilty = {
+				release_from_prison = yes
+				cft_free_of_guilt_effect = yes
+			}
+        }
+    }
+
+	option = {
+		name = cft.509.a
+	}
+}
+
+
+cft.5 = { # event for the person who called the trial, verdict: not guilty
+	type = character_event
+	
+	title = cft.5.t
+	desc = cft.5.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:guilty
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:judge
+		animation = shock
+	}
+
+    immediate = {
+		remove_character_flag = called_trial
+		scope:guilty = {
+			release_from_prison = yes
+		}
+    }
+
+	option = {
+		name = cft.5.a
+		hidden_effect = {
+			scope:guilty = {
+				trigger_event = {
+					id = cft.6
+				}        
+			}
+		}
+	}
+	option = {
+		name = cft.5.b
+		add_tyranny = 20
+		imprison = { target = scope:guilty }
+		hidden_effect = {
+			scope:guilty = {
+				trigger_event = {
+					id = cft.61
+				}
+			}
+		}
+	}
+}
+
+cft.6 = { # event for the person who is tried, verdict: not guilty
+	type = character_event
+	
+	title = cft.6.t
+	desc = cft.6.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:guilty
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:judge
+		animation = shock
+	}
+
+    immediate = {
+        hidden_effect = {
+            scope:guilty = {
+                cft_free_of_guilt_effect = yes
+            }
+        }
+    }
+
+	option = {
+		name = cft.6.a
+	}
+}
+
+cft.61 = { # event for the person who is tried, verdict: not guilty, liege is tyrannical
+	type = character_event
+	
+	title = cft.61.t
+	desc = cft.61.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:guilty
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:judge
+		animation = ecstasy
+	}
+
+    immediate = {
+        hidden_effect = {
+            scope:guilty = {
+                cft_free_of_guilt_effect = yes
+            }
+        }
+    }
+
+	option = {
+		name = cft.61.a
+	}
+}
+
+cft.7 = { # event for the person who called the trial, verdict: guilty
+	type = character_event
+	
+	title = cft.7.t
+	desc = cft.7.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:judge
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:guilty
+		animation = fear
+	}
+
+    immediate = {
+        hidden_effect = {
+            root = {
+                remove_character_flag = called_trial
+            }
+            if = {
+                limit = {
+                    NOT = {
+                        scope:guilty = {
+                            is_imprisoned_by = scope:judge
+                        }
+                    }
+                }
+				imprison = { target = scope:guilty }
+            }
+        }
+    }
+
+	option = {
+		name = cft.7.a
+        custom_tooltip = cft.7.tt.a
+        hidden_effect = {
+            scope:judge = {
+                trigger_event = {
+                    id = cft.101
+					days = 1
+                }                     
+            }       
+        }
+    }
+}
+
+cft.8 = { # event for the person who is tried, verdict: guilty
+	type = character_event
+	
+	title = cft.8.t
+	desc = cft.8.d
+
+	theme = realm
+	left_portrait = {
+		character = scope:judge
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:guilty
+		animation = fear
+	}
+
+	option = {
+		name = cft.8.a
+        custom_tooltip = cft.8.tt.a
+	}
+}
+
+cft.101 = { # event for determining the fate of the accused
+	type = character_event
+	
+	title = cft.101.t
+	desc = cft.101.d
+
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+	right_portrait = {
+		character = scope:guilty
+		animation = beg
+	}
+
+	immediate = {
+		scope:guilty = {
+			remove_character_flag = is_being_tortured
+		}
+	}
+
+	option = {
+		name = cft.101.a
+        scope:guilty = {
+            death = { killer = scope:judge death_reason = death_punishment }
+        }
+	}
+	option = {
+		name = cft.101.b
+        scope:guilty = {
+            release_from_prison = yes
+            banish = yes
+        }
+	}
+	option = {
+		name = cft.101.c
+        trigger = {
+            scope:guilty = {
+                highest_held_title_tier >= tier_county
+            }
+        }
+        hidden_effect = {
+            create_title_and_vassal_change = {
+				type = conquest
+				save_scope_as = change
+			}
+			scope:guilty = {
+				every_held_title = {
+					change_title_holder_include_vassals = {
+						holder = scope:judge
+						change = scope:change
+					}
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+            scope:guilty = {
+                death = { killer = scope:judge death_reason = death_punishment }
+            }           
+        }
+	}
+	option = {
+		name = cft.101.l
+        trigger = {
+            scope:guilty = {
+                highest_held_title_tier >= tier_county
+            }
+        }
+        hidden_effect = {
+            create_title_and_vassal_change = {
+				type = conquest
+				save_scope_as = change
+			}
+			scope:guilty = {
+				every_held_title = {
+					change_title_holder_include_vassals = {
+						holder = scope:judge
+						change = scope:change
+					}
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+            scope:guilty = {
+                release_from_prison = yes
+                banish = yes
+            }
+        }       
+	}
+	option = {
+		name = cft.101.e
+	}
+}
+

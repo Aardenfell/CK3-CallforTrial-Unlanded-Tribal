@@ -1,0 +1,79 @@
+cft_free_of_guilt_effect = {
+	root = {
+		remove_character_flag = is_being_tortured
+		if = {
+			limit = {
+				has_trait = kinslayer_3
+				trait_is_shunned_or_criminal_in_faith_trigger = { FAITH = faith TRAIT = kinslayer_3 GENDER_CHARACTER = root }
+			}
+			remove_trait_force_tooltip = kinslayer_3
+		}
+		if = {
+			limit = {
+				has_trait = kinslayer_2
+				trait_is_shunned_or_criminal_in_faith_trigger = { FAITH = faith TRAIT = kinslayer_2 GENDER_CHARACTER = root }
+			}
+			remove_trait_force_tooltip = kinslayer_2
+		}
+		if = {
+			limit = {
+				has_trait = witch
+				trait_is_shunned_or_criminal_in_faith_trigger = { FAITH = faith TRAIT = witch GENDER_CHARACTER = root }
+			}
+			remove_trait_force_tooltip = witch
+		}
+		if = {
+			limit = {
+				has_trait = deviant
+				trait_is_shunned_or_criminal_in_faith_trigger = { FAITH = faith TRAIT = deviant GENDER_CHARACTER = root }
+			}
+			remove_trait_force_tooltip = deviant
+		}
+		if = {
+			limit = {
+				has_trait = sodomite
+				trait_is_shunned_or_criminal_in_faith_trigger = { FAITH = faith TRAIT = sodomite GENDER_CHARACTER = root }
+			}
+			remove_trait_force_tooltip = sodomite
+		}
+		if = {
+			limit = {
+				has_trait = kinslayer_1
+				trait_is_shunned_or_criminal_in_faith_trigger = { FAITH = faith TRAIT = kinslayer_1 GENDER_CHARACTER = root }
+			}
+			remove_trait_force_tooltip = kinslayer_1
+		}
+		if = {
+			limit = {
+				has_trait = adulterer
+				trait_is_shunned_or_criminal_in_faith_trigger = { FAITH = faith TRAIT = adulterer GENDER_CHARACTER = root }
+			}
+			remove_trait_force_tooltip = adulterer
+		}
+		if = {
+			limit = {
+				has_trait = fornicator
+				trait_is_shunned_or_criminal_in_faith_trigger = { FAITH = faith TRAIT = fornicator GENDER_CHARACTER = root }
+			}
+			remove_trait_force_tooltip = fornicator
+		}
+		every_liege_or_above = {
+			if = {
+				limit = { has_imprisonment_reason = root }
+				consume_imprisonment_reasons = root
+			}
+			if = {
+				limit = { has_banish_reason = root }
+				consume_banish_reasons = root
+			}
+			if = {
+				limit = { has_execute_reason = root }
+				consume_execute_reasons = root
+			}
+			if = {
+				limit = { has_revoke_title_reason = root }
+				consume_revoke_title_reason = root
+			}
+		}
+	}
+}

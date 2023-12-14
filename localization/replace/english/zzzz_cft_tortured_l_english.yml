@@ -1,0 +1,3 @@
+﻿l_english:
+ I_AM_BEING_TORTURED:0 "You are currently unavailable."
+ THEY_ARE_BEING_TORTURED:0 "[CHARACTER.GetShortUIName|U] is currently unavailable."
