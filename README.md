@@ -69,4 +69,4 @@ This enhancement is provided under the same license as the original mod. Please 
 
 ## Disclaimer
 
-This enhanced version is not officially endorsed by the original author. Use it at your own discretion.
+This version is not officially endorsed by the original author. Will pull the plug at the orginal author's request.
