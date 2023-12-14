@@ -1,6 +1,6 @@
 # Call for Trial - Unlanded & Tribal
 
-![Mod Banner](link/to/your/banner/image.png)
+![Mod Banner](https://github.com/Aardenfell/Call-for-Trial---Unlanded---Tribal/blob/master/thumbnail.png)
 
 This is an enhanced version of the "Call for Trial" mod originally created by [Original Author](https://steamcommunity.com/profiles/76561199180090097). The original mod can be found [here](https://steamcommunity.com/sharedfiles/filedetails/?id=2898554396&searchtext=call+for+trial).
 
@@ -46,7 +46,7 @@ In addition to the original features, this enhanced version incorporates the fol
 
 ## Installation
 
-1. Download the latest version of the mod from the [Releases](link/to/releases) page.
+1. Download the latest version of the mod from the [Releases](https://github.com/Aardenfell/Call-for-Trial---Unlanded---Tribal/releases) page.
 2. Extract the contents into your game's mod directory.
 3. Enable the mod in the game's launcher.
 
@@ -56,7 +56,7 @@ This version should have the same compatibilty as the original mod. However, don
 
 ## Feedback and Contributions
 
-Feedback and contributions are welcome! If you encounter issues or have suggestions for improvement, please open an issue [here](link/to/issues).
+Feedback and contributions are welcome! If you encounter issues or have suggestions for improvement, please open an issue [here](https://github.com/Aardenfell/Call-for-Trial---Unlanded---Tribal/issues).
 
 ## License
 
