@@ -11,7 +11,6 @@
 	notification_text = CALL_FOR_TRIAL_TEXT
 
 	is_shown = {
-		scope:actor = { NOT = { has_government = tribal_government } }
 		NOT = { scope:actor = scope:recipient }
 		
 		OR = {
@@ -19,8 +18,10 @@
 			scope:recipient = { is_imprisoned_by = scope:actor }
 		}	
 		
-		scope:recipient = {
-			is_vassal_or_below_of = scope:actor
+		OR = {
+			scope:recipient = { is_vassal_or_below_of = scope:actor }
+			# try to call any courtiers
+			scope:recipient = { is_courtier_of = scope:actor }
 		}
 		
 		NOT = {
@@ -35,7 +36,7 @@
 		}
 	}
 	
-	cooldown_against_recipient = { years = 10 }
+	cooldown_against_recipient = { months = 1 }
 
 	on_accept = {
 		# Will scope:recipient need to choose a champion?
@@ -466,7 +467,7 @@ demand_trial_interaction = {
 		}
 	}
 	
-	cooldown_against_recipient = { years = 10 }
+	cooldown_against_recipient = { months = 1 }
 	
 	on_accept = {
 		custom_tooltip = cft_dt_accept_tt
